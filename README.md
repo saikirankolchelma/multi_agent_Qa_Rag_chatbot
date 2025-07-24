@@ -1,6 +1,11 @@
 # 🤖 Advanced Agentic RAG Chatbot with MCP
 
-This project implements a sophisticated, agent-based Retrieval-Augmented Generation (RAG) chatbot capable of answering complex questions from a knowledge base of multiple document types. The architecture is built on a scalable **Model Context Protocol (MCP)** using Redis and features an advanced two-stage retrieval pipeline to ensure high-accuracy answers powered by the state-of-the-art **Mistral-7B** model
+This project implements a sophisticated, agent-based Retrieval-Augmented Generation (RAG) chatbot capable of answering complex questions from a knowledge base of multiple document types. The architecture is built on a scalable **Model Context Protocol (MCP)** using Redis and features an advanced two-stage retrieval pipeline to ensure high-accuracy answers powered by the state-of-the-art **Mistral-7B** model.
+
+### 🎥 Demo Video & プレゼンテーション
+
+*   **[Link to Your 5-Minute Video Presentation]**
+*   **[Link to the Architecture Presentation PDF in this Repo]**
 
 ---
 
@@ -17,31 +22,32 @@ The workflow is divided into two main phases: **1. Document Ingestion** and **2.
 ```mermaid
 graph TD
     subgraph Ingestion Phase
-        A[👤 User uploads file via Streamlit UI] --> B{📨 Redis Message Bus};
+        A["👤 User uploads file via Streamlit UI"] --> B{"📨 Redis Message Bus"};
         B -- "1. MCP Message [Type: INGEST]" --> C(IngestionAgent);
-        C -->|Parses & Chunks Document| B;
+        C -->|"Parses & Chunks Document"| B;
         B -- "2. MCP Message [Type: ADD_DOCUMENT]" --> D(RetrievalAgent);
-        D -->|3. Embeds Chunks| F[🤖 Inference Service <br><i>(all-MiniLM-L6-v2)</i>];
+        D -->|"3. Embeds Chunks"| F["🤖 Inference Service <br><i>(all-MiniLM-L6-v2)</i>"];
         F --> D;
-        D -->|4. Indexes Vectors| E((📚 FAISS Vector Store));
+        D -->|"4. Indexes Vectors"| E(("-📚 FAISS Vector Store-"));
     end
 ```
 
 ### 2. Query & Response Flow 🤔➡️💬
 
 *This phase uses the chatbot's memory to answer questions.*
+
 ```mermaid
 graph TD
     subgraph Query Phase
-        F[👤 User asks question in UI] --> G{📨 Redis Message Bus};
+        F["👤 User asks question in UI"] --> G{"📨 Redis Message Bus"};
         G -- "1. MCP Message [Type: RETRIEVE]" --> H(RetrievalAgent);
-        H -- "2. Vector Search (Recall)" --> I((📚 FAISS Vector Store));
+        H -- "2. Vector Search (Recall)" --> I(("-📚 FAISS Vector Store-"));
         I -- "3. Returns 10 candidates" --> H;
-        H -- "4. Reranks with Cross-Encoder" --> J[🤖 Inference Service <br><i>(ms-marco-MiniLM-L-6-v2)</i>];
+        H -- "4. Reranks with Cross-Encoder" --> J["🤖 Inference Service <br><i>(ms-marco-MiniLM-L-6-v2)</i>"];
         J --> H;
         H -- "5. Sends Curated Context" --> G;
         G -- "6. MCP Message [Type: RETRIEVAL_RESULT]" --> K(LLMResponseAgent);
-        K -- "7. Generates Answer" --> L[🤖 Inference Service <br><i>(Mistral-7B GGUF)</i>];
+        K -- "7. Generates Answer" --> L["🤖 Inference Service <br><i>(Mistral-7B GGUF)</i>"];
         L --> K;
         K -- "8. Sends Final Answer" --> G;
         G -- "9. MCP Message [Type: LLM_RESPONSE]" --> F;
@@ -103,7 +109,8 @@ The selection of AI models was an iterative process focused on balancing state-o
 **1. Clone the repository:**
 ```bash
 git clone [Your-GitHub-Repo-Link]
-cd agentic-rag-project```
+cd name-of-your-project-folder
+```
 
 **2. Create and activate a Python virtual environment:**
 ```bash

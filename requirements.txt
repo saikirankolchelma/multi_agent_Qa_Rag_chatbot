@@ -1,0 +1,27 @@
+# --- Core Frameworks ---
+streamlit
+langchain==0.1.20
+langchain-community==0.0.38
+langchain-core==0.1.52
+pydantic<2
+
+# --- AI & Embeddings ---
+torch
+sentence-transformers
+accelerate
+# For GGUF models, CTransformers is better than the langchain-huggingface wrapper
+ctransformers>=0.2.27
+
+# --- Vector Store ---
+faiss-cpu
+numpy
+
+# --- Document Loaders & Utilities ---
+unstructured
+python-pptx
+pandas
+python-docx
+pypdf
+
+# --- Messaging & Communication ---
+redis
